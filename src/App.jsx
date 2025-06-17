@@ -1,42 +1,54 @@
-import { useState } from 'react'
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from './components/Navbar'
-import './App.css'
-import CustomCursor from "./components/CustomCursor";
+
+import Navbar from "./components/Navbar";
 import Preloader from "./components/Preloader";
-import Text from "./components/Text"
-import About from './components/About';
+import About from "./components/About";
 import ServiceSection from "./components/ServiceSection";
+import ServiceDetail from "./components/ServiceDetail";
+import Text from "./components/Text";
 
+const App = () => {
+  const [loading, setLoading] = useState(true);
 
-
-function App() {
-  const [Count, SetCount] = useState(0)
+  // Simulate loading delay
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000); // Preloader stays for 2s
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div>
-<Navbar />
+    <Router>
+      <div className="bg-black text-white min-h-screen font-sans">
+        <Navbar />
+        < Text/>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              loading ? (
+                <Preloader />
+              ) : (
+                <>
+                  <About />
+                  <ServiceSection />
+                </>
+              )
+            }
+          />
+          <Route path="/services/:id" element={<ServiceDetail />} />
+          <Route
+            path="*"
+            element={
+              <div className="text-center py-20 text-red-500">Page not found</div>
+            }
+          />
+        </Routes>
+      </div>
+    </Router>
+  );
+};
 
-
-<CustomCursor/>
-<Preloader/>
-<Text/>
-<About/>
-<ServiceSection/>
-
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-  )
-}
-
-export default App
+export default App;
