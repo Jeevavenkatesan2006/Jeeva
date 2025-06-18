@@ -8,6 +8,7 @@ import ServiceSection from "./components/ServiceSection";
 import ServiceDetail from "./components/ServiceDetail";
 import Text from "./components/Text";
 
+
 const App = () => {
   const [loading, setLoading] = useState(true);
 
@@ -34,6 +35,9 @@ const App = () => {
                 <>
                   <About />
                   <ServiceSection />
+                  
+                 
+                 
                 </>
               )
             }

@@ -1,59 +1,100 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Utility to safely load image from assets folder
-const getImage = (imageName) => {
-  try {
-    return new URL(`../assets/${imageName}`, import.meta.url).href;
-  } catch (err) {
-    return "";
-  }
-};
+gsap.registerPlugin(ScrollTrigger);
 
 const ServiceCard = ({ service }) => {
-  const [isVisible, setIsVisible] = useState(true);
+  const cardRef = useRef(null);
   const navigate = useNavigate();
+  const [typedText, setTypedText] = useState("");
+
+  useEffect(() => {
+    const el = cardRef.current;
+
+    gsap.fromTo(
+      el,
+      { y: 80, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+          toggleActions: "play none none reverse",
+        },
+      }
+    );
+
+    // Parallax scroll effect
+    gsap.to(el, {
+      yPercent: -5,
+      ease: "none",
+      scrollTrigger: {
+        trigger: el,
+        scrub: 1,
+      },
+    });
+
+    // Typewriter animation for description
+    let index = 0;
+    const interval = setInterval(() => {
+      setTypedText(service.description.slice(0, index));
+      index++;
+      if (index > service.description.length) clearInterval(interval);
+    }, 30);
+
+    return () => clearInterval(interval);
+  }, [service.description]);
 
   const handleClick = () => {
-    setIsVisible(false);  // trigger exit
-    setTimeout(() => {
-      navigate(`/services/${service.id}`);
-    }, 500);  // wait for exit animation
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-    exit: { opacity: 0, y: -50, transition: { duration: 0.4, ease: "easeInOut" } },
+    gsap.to(cardRef.current, {
+      opacity: 0,
+      y: -30,
+      duration: 0.5,
+      onComplete: () => navigate(`/services/${service.id}`),
+    });
   };
 
   return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.div
-          variants={cardVariants}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          whileHover={{ scale: 1.05 }}
-          className="p-5 rounded-2xl shadow-xl bg-white/10 backdrop-blur-md border border-white/10 text-white cursor-pointer"
-          onClick={handleClick}
-        >
+    <div
+      ref={cardRef}
+      onClick={handleClick}
+      className="p-5 rounded-2xl shadow-xl bg-pink-400 backdrop-blur-md border border-b-cyan-400 text-blue-900 cursor-pointer transform transition duration-300 hover:scale-105"
+    >
+      {/* Title and icon */}
+      <div className="flex items-center gap-3 mb-4">
+        {service.titleImage && (
           <img
-            src={getImage(service.image)}
-            alt={service.title}
-            className="w-16 h-16 object-contain mb-4"
+            src={service.titleImage}
+            alt={`${service.title} icon`}
+            className="w-20 h-20 object-contain"
           />
-          <h3 className="text-xl font-bold mb-2">{service.title}</h3>
-          <p className="text-sm text-white/80 mb-4">{service.description}</p>
-          <div className="text-sm text-blue-400 underline hover:text-blue-600 transition">
-            Read More →
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        )}
+        <h2 className="text-2xl font-semibold">{service.title}</h2>
+      </div>
+
+      {/* Typewriter description */}
+      <div
+  className="p-3 rounded-lg bg-cover bg-center bg-no-repeat"
+  style={{
+    backgroundImage: "url('/assets/earth-galaxy.jpg')", // Make sure this path is correct
+  }}
+>
+  <p className="text-sm text-rose-100 mb-4 whitespace-pre-line backdrop-blur-sm bg-black/40 p-2 rounded">
+    {typedText}
+  </p>
+
+  <div className="text-sm text-white underline hover:text-cyan-300 transition backdrop-blur-sm bg-black/30 p-1 inline-block rounded">
+    Read More →
+  </div>
+</div>
+
+    </div>
   );
 };
 
@@ -62,7 +103,8 @@ ServiceCard.propTypes = {
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
+    titleImage: PropTypes.string,
+    icon: PropTypes.string,
   }).isRequired,
 };
 

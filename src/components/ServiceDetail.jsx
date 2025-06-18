@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import serviceData from "../Data/ServiceData"; // ✅ FIXED
 
+
 const ServiceDetail = () => {
   const { id } = useParams();
   const service = serviceData.find((s) => s.id === id);
