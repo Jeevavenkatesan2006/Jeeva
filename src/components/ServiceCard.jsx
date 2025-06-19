@@ -3,7 +3,8 @@ import React, { useEffect, useRef, useState, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ScrollTrigger from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 
