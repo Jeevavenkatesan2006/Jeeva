@@ -1,6 +1,5 @@
-// ServiceDetail.jsx
 import React, { Suspense, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import serviceData from "../Data/ServiceData";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
@@ -38,6 +37,7 @@ const FloatingFlowers = () => {
   );
 };
 
+
 // Canvas 3D background
 const FlowerBackground = () => (
   <Canvas camera={{ position: [0, 0, 25], fov: 70 }}>
@@ -52,6 +52,7 @@ const FlowerBackground = () => (
 
 const ServiceDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const service = serviceData.find((s) => s.id === id);
 
   if (!service) {
@@ -79,9 +80,39 @@ const ServiceDetail = () => {
             className="w-20 h-20 mb-6"
           />
         )}
-        <p className="max-w-2xl text-pink-100 text-lg leading-relaxed">
+        <p className="max-w-2xl text-pink-100 text-lg leading-relaxed mb-6">
           {service.description}
         </p>
+        {service.benefits && (
+  <div className="mt-10 text-left max-w-2xl text-pink-100">
+    <h2 className="text-2xl font-bold text-pink-400 mb-4">Benefits</h2>
+    <ul className="space-y-3">
+      {service.benefits.map((point, idx) => (
+        <li
+          key={idx}
+          className="relative pl-6 animate-fade-in-up"
+          style={{ animationDelay: `${idx * 0.3}s` }}
+        >
+          <span className="absolute left-0 top-1.5 h-2 w-2 rounded-full bg-pink-400"></span>
+          {point}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+
+        {/* Previous Page Button */}
+        <button
+  onClick={() => navigate(-1)}
+  className="mt-6 px-6 py-2 text-white font-semibold rounded-full transition-all duration-500 
+             bg-gradient-to-r from-pink-500 to-purple-600 
+             hover:from-purple-600 hover:to-blue-600 
+             hover:scale-105 hover:text-yellow-200 shadow-lg"
+>
+  ← Back to Services
+</button>
+
       </div>
     </div>
   );
