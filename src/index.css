@@ -82,4 +82,20 @@ opacity: 1;
 img {
   backface-visibility: hidden;
 }
+@layer utilities {
+  .animate-gradient-x {
+    background-size: 300% 300%;
+    animation: gradient-x 6s ease infinite;
+  }
+
+  @keyframes gradient-x {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+}
 

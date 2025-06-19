@@ -17,7 +17,7 @@ const Navbar = () => {
   const closeMenu = () => setMobileMenuOpen(false);
   const toggleContactForm = () => {
     setShowContactForm(!showContactForm);
-    setSubmitted(false); // Reset success message
+    setSubmitted(false);
     closeMenu();
   };
 
@@ -30,7 +30,6 @@ const Navbar = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // You can send formData to a server here
     setSubmitted(true);
     setFormData({ mobile: "", email: "", message: "" });
   };
@@ -47,8 +46,8 @@ const Navbar = () => {
 
   return (
     <div className="relative bg-white">
+      {/* Header */}
       <header className="fixed top-0 left-0 w-full z-50">
-        {/* Top Contact Info */}
         <div className="bg-gray-100 text-gray-900 text-sm font-semibold py-2 px-6 flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <FaLocationDot className="text-purple-600" />
@@ -60,10 +59,8 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Main Navbar */}
         <nav className="bg-black text-gray-50 px-6 py-4 shadow-md">
           <div className="flex items-center justify-between">
-            {/* Logo */}
             <a
               href="#"
               className="flex items-center space-x-2 font-semibold tracking-tight text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text transform transition-transform duration-500 hover:rotate-6 hover:scale-105"
@@ -72,7 +69,6 @@ const Navbar = () => {
               <span className="text-3xl">Code Developers</span>
             </a>
 
-            {/* Desktop Menu */}
             <ul className="hidden md:flex space-x-6">
               {menuItems.map((item) => (
                 <li key={item} className="group">
@@ -86,7 +82,6 @@ const Navbar = () => {
               ))}
             </ul>
 
-            {/* Desktop Contact Button */}
             <button
               onClick={toggleContactForm}
               className="hidden md:flex items-center space-x-2 font-semibold px-4 py-2 rounded-full bg-gray-50 text-gray-900 hover:bg-gray-200 transition duration-300"
@@ -95,7 +90,6 @@ const Navbar = () => {
               <FaArrowRight />
             </button>
 
-            {/* Mobile Menu Toggle Button */}
             <button
               aria-label="Toggle Menu"
               className="md:hidden text-2xl z-50"
@@ -119,7 +113,6 @@ const Navbar = () => {
                 <FaTimes />
               </button>
             </div>
-
             <ul className="flex flex-col space-y-6 mt-10">
               {menuItems.map((item) => (
                 <li key={item} onClick={closeMenu}>
@@ -143,71 +136,73 @@ const Navbar = () => {
         </nav>
       </header>
 
-      {/* Contact Form Popup */}
+      {/* Contact Form Modal with Gradient Animation */}
       {showContactForm && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50 px-4">
-          <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md relative">
-            <button
-              onClick={toggleContactForm}
-              className="absolute top-3 right-3 text-xl font-bold text-gray-600 hover:text-red-600"
-            >
-              ×
-            </button>
-            <h2 className="text-2xl font-bold mb-6 text-center text-black">Contact Us</h2>
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-60 px-4">
+          <div className="bg-gradient-to-br from-pink-500 via-purple-600 to-blue-500 animate-gradient-x bg-[length:300%_300%] rounded-xl shadow-2xl p-1 w-full max-w-md relative">
+            <div className="bg-white rounded-xl p-6">
+              <button
+                onClick={toggleContactForm}
+                className="absolute top-2 right-4 text-xl font-bold text-gray-500 hover:text-red-600"
+              >
+                ×
+              </button>
+              <h2 className="text-2xl font-bold mb-6 text-center text-black">Contact Us</h2>
 
-            {submitted ? (
-              <p className="text-green-600 text-center font-semibold">
-                Submitted successfully!
-              </p>
-            ) : (
-              <form className="space-y-4" onSubmit={handleSubmit}>
-                <div>
-                  <label className="block font-semibold text-blue-800 mb-1">
-                    Your Mobile Number
-                  </label>
-                  <input
-                    name="mobile"
-                    type="tel"
-                    value={formData.mobile}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-2 border rounded-lg text-fuchsia-700"
-                  />
-                </div>
-                <div>
-                  <label className="block font-semibold text-blue-800 mb-1">
-                    Your Email Address
-                  </label>
-                  <input
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-2 border rounded-lg text-fuchsia-700"
-                  />
-                </div>
-                <div>
-                  <label className="block font-semibold text-blue-900 mb-1">
-                    Your Message
-                  </label>
-                  <textarea
-                    name="message"
-                    rows="4"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-2 border rounded-lg text-fuchsia-700"
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full py-2 px-4 bg-pink-600 hover:bg-purple-600 text-white font-semibold rounded-lg transition duration-300"
-                >
-                  Submit
-                </button>
-              </form>
-            )}
+              {submitted ? (
+                <p className="text-green-600 text-center font-semibold">
+                  Submitted successfully!
+                </p>
+              ) : (
+                <form className="space-y-4" onSubmit={handleSubmit}>
+                  <div>
+                    <label className="block font-semibold text-blue-800 mb-1">
+                      Your Mobile Number
+                    </label>
+                    <input
+                      name="mobile"
+                      type="tel"
+                      value={formData.mobile}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-2 border rounded-lg text-fuchsia-700"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-semibold text-blue-800 mb-1">
+                      Your Email Address
+                    </label>
+                    <input
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-2 border rounded-lg text-fuchsia-700"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-semibold text-blue-900 mb-1">
+                      Your Message
+                    </label>
+                    <textarea
+                      name="message"
+                      rows="4"
+                      value={formData.message}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-2 border rounded-lg text-fuchsia-700"
+                    ></textarea>
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full py-2 px-4 bg-pink-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition duration-300"
+                  >
+                    Submit
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
         </div>
       )}
