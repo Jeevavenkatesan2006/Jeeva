@@ -1,10 +1,35 @@
-import React, { useEffect, useRef, useState } from "react";
+// ServiceCard.jsx
+import React, { useEffect, useRef, useState, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Stars } from "@react-three/drei";
 
 gsap.registerPlugin(ScrollTrigger);
+
+// 3D Galaxy Background Component
+const GalaxyBackground = () => {
+  return (
+    <Canvas camera={{ position: [0, 0, 8], fov: 75 }}>
+      <ambientLight intensity={0.4} />
+      <pointLight position={[10, 10, 10]} />
+      <Suspense fallback={null}>
+        <Stars
+          radius={80}
+          depth={50}
+          count={5000}
+          factor={8}
+          saturation={0}
+          fade
+          speed={2}
+        />
+      </Suspense>
+      <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
+    </Canvas>
+  );
+};
 
 const ServiceCard = ({ service }) => {
   const cardRef = useRef(null);
@@ -30,7 +55,6 @@ const ServiceCard = ({ service }) => {
       }
     );
 
-    // Parallax scroll effect
     gsap.to(el, {
       yPercent: -5,
       ease: "none",
@@ -40,7 +64,6 @@ const ServiceCard = ({ service }) => {
       },
     });
 
-    // Typewriter animation for description
     let index = 0;
     const interval = setInterval(() => {
       setTypedText(service.description.slice(0, index));
@@ -61,39 +84,37 @@ const ServiceCard = ({ service }) => {
   };
 
   return (
-    <div
-      ref={cardRef}
-      onClick={handleClick}
-      className="p-5 rounded-2xl shadow-xl bg-pink-400 backdrop-blur-md border border-b-cyan-400 text-blue-900 cursor-pointer transform transition duration-300 hover:scale-105"
-    >
-      {/* Title and icon */}
-      <div className="flex items-center gap-3 mb-4">
-        {service.titleImage && (
-          <img
-            src={service.titleImage}
-            alt={`${service.title} icon`}
-            className="w-20 h-20 object-contain"
-          />
-        )}
-        <h2 className="text-2xl font-semibold">{service.title}</h2>
+    <div className="relative min-h-[200px] rounded-2xl overflow-hidden shadow-xl">
+      {/* 3D Background */}
+      <div className="absolute inset-0 z-0">
+        <GalaxyBackground />
       </div>
 
-      {/* Typewriter description */}
+      {/* Card Content */}
       <div
-  className="p-3 rounded-lg bg-cover bg-center bg-no-repeat"
-  style={{
-    backgroundImage: "url('/assets/earth-galaxy.jpg')", // Make sure this path is correct
-  }}
->
-  <p className="text-sm text-rose-100 mb-4 whitespace-pre-line backdrop-blur-sm bg-black/40 p-2 rounded">
-    {typedText}
-  </p>
+        ref={cardRef}
+        onClick={handleClick}
+        className="relative z-10 p-5 bg-black/60 backdrop-blur-sm border border-cyan-400 text-white cursor-pointer transform transition duration-300 hover:scale-105 h-full flex flex-col justify-between"
+      >
+        {/* Title and icon */}
+        <div className="flex items-center gap-3 mb-4">
+          {service.titleImage && (
+            <img
+              src={service.titleImage}
+              alt={`${service.title} icon`}
+              className="w-20 h-20 object-contain"
+            />
+          )}
+          <h2 className="text-2xl font-semibold">{service.title}</h2>
+        </div>
 
-  <div className="text-sm text-white underline hover:text-cyan-300 transition backdrop-blur-sm bg-black/30 p-1 inline-block rounded">
-    Read More →
-  </div>
-</div>
+        {/* Typewriter description */}
+        <p className="text-sm text-rose-200 mb-4 whitespace-pre-line">{typedText}</p>
 
+        <div className="text-sm text-cyan-300 underline hover:text-white transition">
+          Read More →
+        </div>
+      </div>
     </div>
   );
 };

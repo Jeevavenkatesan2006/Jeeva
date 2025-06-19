@@ -14,9 +14,9 @@ const StarBackground = () => {
       <Suspense fallback={null}>
         <Stars
           radius={200}       // How far the stars spread
-          depth={80}         // Z-space depth
+          depth={30}         // Z-space depth
           count={8000}       // Number of stars
-          factor={100}        // ⭐ BIGGER star size factor
+          factor={70}        // ⭐ BIGGER star size factor
           saturation={0}     // White stars
           fade               // Fading edges
           speed={0.6}        // Subtle motion
