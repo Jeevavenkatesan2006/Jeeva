@@ -1,10 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
+import Flip from 'gsap/Flip';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { useInView } from 'react-intersection-observer';
-
 import portfolioImg from "../assets/portfolio.jpg";
 import realestateImg from "../assets/real estate.jpg";
 import fooddeliveryImg from "../assets/food delivery.jpg";
@@ -26,45 +24,55 @@ import electricImg from "../assets/electric .jpg";
 import normalImg from "../assets/normal.jpg";
 import blackmanImg from "../assets/black man.jpg";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(Flip);
 
+// Dummy categories and project data
+const categories = ['All Websites', 'Multi Page Websites', 'Single Page Websites', 'Ecommerce Websites'];
 const projects = [
-  { id: 1, image: portfolioImg, title: 'Portfolio website', category: 'Single Page Websites' },
-  { id: 2, image: realestateImg, title: 'Real Estate website', category: 'Multi Page Websites' },
-  { id: 3, image: fooddeliveryImg, title: 'Food delivery website', category: 'Single Page Websites' },
-  { id: 4, image: hikingImg, title: 'Hiking website', category: 'Ecommerce Websites' },
-  { id: 5, image: imageclarifyImg, title: 'Image clarify website', category: 'Ecommerce Websites' },
-  { id: 6, image: landingpageImg, title: 'Landing page website', category: 'Ecommerce Websites' },
-  { id: 7, image: saasImg, title: 'SaaS website', category: 'Ecommerce Websites' },
-  { id: 8, image: weatherImg, title: 'Weather website', category: 'Ecommerce Websites' },
-  { id: 9, image: videostreamImg, title: 'Video stream website', category: 'Single Page Websites' },
-  { id: 10, image: travelenjoyImg, title: 'Travel enjoy website', category: 'Single Page Websites' },
-  { id: 11, image: socialmediaImg, title: 'Social media website', category: 'Single Page Websites' },
-  { id: 12, image: faceImg, title: 'Face recognition website', category: 'Single Page Websites' },
-  { id: 13, image: fasionImg, title: 'Fashion', category: 'Single Page Websites' },
-  { id: 14, image: creativedesignImg, title: 'Creative design website', category: 'Single Page Websites' },
-  { id: 15, image: coronoImg, title: 'Health website', category: 'Multi Page Websites' },
-  { id: 16, image: musicImg, title: 'Music website', category: 'Multi Page Websites' },
-  { id: 17, image: pricepredictionImg, title: 'Price prediction website', category: 'Multi Page Websites' },
-  { id: 18, image: electricImg, title: 'Electric website', category: 'Multi Page Websites' },
-  { id: 19, image: normalImg, title: 'Web App website', category: 'Multi Page Websites' },
-  { id: 20, image: blackmanImg, title: 'Land website', category: 'Multi Page Websites' },
+  { id: 1, image: portfolioImg, title:'Portfolio website',category: 'Single Page Websites' },
+  { id: 2, image:realestateImg , title:'Real Estate website', category: 'Multi Page Websites' },
+  { id: 3, image: fooddeliveryImg, title:'Food delivery website', category: 'Single Page Websites' },
+  { id: 4, image:hikingImg , title:'Hiking website', category: 'Ecommerce Websites' },
+  { id: 5, image: imageclarifyImg, title:'Image clarify website',category: 'Ecommerce Websites' },
+  { id: 6, image:landingpageImg, title:'landin gpage website', category: 'Ecommerce Websites' },
+  { id: 7, image: saasImg, title:'saas website', category: 'Ecommerce Websites' },
+  { id: 8, image:weatherImg , title:'weather website', category: 'Ecommerce Websites'},
+  { id: 9, image:videostreamImg , title:'video stream website', category: 'Single Page Websites' },
+  { id: 10, image:travelenjoyImg , title:'travel enjoy website',category: 'Single Page Websites'  },
+  { id: 11, image:socialmediaImg ,title:'social media website', category: 'Single Page Websites' },
+  { id: 12, image: faceImg,title:'face recognition website',category: 'Single Page Websites'  },
+  { id: 13, image: fasionImg,title:'fasion',category: 'Single Page Websites' },
+  { id: 14, image: creativedesignImg, title:'creative design website',category: 'Single Page Websites'  },
+  { id: 15, image: coronoImg, title:'Health website',category: 'Multi Page Websites' },
+  { id: 16, image:  musicImg, title:' music website', category: 'Multi Page Websites' },
+   { id: 17, image: pricepredictionImg,title:'price prediction website', category: 'Multi Page Websites' },
+    { id: 18, image: electricImg, title:'electric website',category: 'Multi Page Websites'  },
+ { id: 19, image: normalImg, title:'web App website', category: 'Multi Page Websites' },
+ { id: 20, image:blackmanImg , title:'Land website', category: 'Multi Page Websites' },
+
+
+  
 ];
 
+// Floating 3D background
 const FloatingCubes = () => {
   const groupRef = useRef();
   useFrame(({ clock }) => {
-    if (groupRef.current) groupRef.current.rotation.y = clock.getElapsedTime() * 0.05;
+    if (groupRef.current) groupRef.current.rotation.y = clock.getElapsedTime() * 0.08;
   });
 
   return (
     <group ref={groupRef}>
-      {Array.from({ length: 20 }).map((_, i) => (
+      {Array.from({ length: 50 }).map((_, i) => (
         <mesh
           key={i}
-          position={[(Math.random() - 0.5) * 30, (Math.random() - 0.5) * 20, (Math.random() - 0.5) * 30]}
+          position={[
+            (Math.random() - 0.5) * 40,
+            (Math.random() - 0.5) * 30,
+            (Math.random() - 0.5) * 40,
+          ]}
         >
-          <boxGeometry args={[0.4, 0.4, 0.4]} />
+          <boxGeometry args={[0.5, 0.5, 0.5]} />
           <meshStandardMaterial color="#9333ea" emissive="#a855f7" emissiveIntensity={0.6} />
         </mesh>
       ))}
@@ -72,82 +80,96 @@ const FloatingCubes = () => {
   );
 };
 
-const Background3D = () => {
-  const { ref, inView } = useInView({ threshold: 0.1 });
-
-  return (
-    <div ref={ref} className="absolute inset-0 z-0">
-      {inView && (
-        <Canvas camera={{ position: [0, 0, 20], fov: 60 }} dpr={0.6}>
-          <ambientLight intensity={0.4} />
-          <directionalLight position={[5, 10, 5]} intensity={0.6} />
-          <FloatingCubes />
-          <OrbitControls enableZoom={false} enableRotate={false} enablePan={false} />
-        </Canvas>
-      )}
-    </div>
-  );
-};
+const Background3D = () => (
+  <Canvas camera={{ position: [0, 0, 20], fov: 60 }}>
+    <ambientLight intensity={0.5} />
+    <directionalLight position={[10, 10, 5]} intensity={0.6} />
+    <FloatingCubes />
+    <OrbitControls enableZoom={false} enableRotate={false} enablePan={false} />
+  </Canvas>
+);
 
 const Portfolio = () => {
-  const cardRefs = useRef([]);
+  const [activeFilter, setActiveFilter] = useState('All Websites');
+  const [displayedProjects, setDisplayedProjects] = useState(projects);
+  const titleRef = useRef();
+  const gridRef = useRef();
 
   useEffect(() => {
-    gsap.defaults({ ease: "expo.out", duration: 2 });
-    cardRefs.current.forEach((el, i) => {
-      const x = (Math.random() - 0.5) * 800;
-      const y = (Math.random() - 0.5) * 400;
-      const rotation = (Math.random() - 0.5) * 360;
-      gsap.fromTo(
-        el,
-        { opacity: 0, x, y, rotationZ: rotation, scale: 0.8 },
-        {
-          opacity: 1,
-          x: 0,
-          y: 0,
-          rotationZ: 0,
-          scale: 1,
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 90%',
-            end: 'top 60%',
-            scrub: 1.5,
-            toggleActions: 'play none none reverse',
-          },
-        }
-      );
-    });
+    gsap.fromTo(
+      titleRef.current,
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
+    );
   }, []);
+  useLayoutEffect(() => {
+    const state = Flip.getState('.masonry-item');
+    const filtered =
+      activeFilter === 'All Websites'
+        ? projects
+        : projects.filter(p => p.category === activeFilter);
+    setDisplayedProjects(filtered);
+
+    Flip.from(state, {
+      duration: 0.6,
+      ease: 'power2.inOut',
+      absolute: true,
+      stagger: 0.03,
+    });
+  }, [activeFilter]);
 
   return (
-    <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
-      <Background3D />
+    <div className="relative min-h-screen bg-black text-white">
+      {/* 3D background */}
+      <div className="absolute inset-0 z-0">
+        <Background3D />
+      </div>
 
-      <div className="relative z-10 backdrop-blur-sm bg-black/70 pt-28 pb-20 px-4 md:px-10">
-        <h1 className="text-4xl md:text-5xl font-bold text-center text-fuchsia-400 mb-20">
-          My Portfolio – Web Design Creations
-        </h1>
+      {/* Foreground */}
+      <div className="relative z-10 px-6 pt-28 pb-20 backdrop-blur-sm bg-black/60">
+  <h1
+    ref={titleRef}
+    className="text-4xl md:text-5xl font-sans text-center mb-10 text-fuchsia-400"
+  >
+  <center>My Portfolio</center>
+     Web Design Creations
+  </h1>
 
-        <div className="space-y-32">
-          {projects.map((project, i) => (
+        {/* Filter Buttons */}
+        <div className="flex flex-wrap justify-center gap-4 mb-10">
+          {categories.map(cat => (
+            <button
+              key={cat}
+              onClick={() => setActiveFilter(cat)}
+              className={`px-4 py-2 font-semibold rounded-full transition duration-300 ${
+                activeFilter === cat
+                  ? 'bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white'
+                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Masonry Grid */}
+        <div
+          ref={gridRef}
+          className="columns-2 sm:columns-3 lg:columns-10 gap-5 space-y-2 space-x-2"
+        >
+          {displayedProjects.map(project => (
             <div
               key={project.id}
-              ref={el => (cardRefs.current[i] = el)}
-              className="flex justify-center items-center min-h-[65vh]"
+              className="masonry-item break-inside-avoid bg-white rounded-xl shadow-lg overflow-hidden transform-gpu hover:scale-105 transition-transform duration-300"
             >
-              <div className="w-11/12 sm:w-4/5 md:w-3/4 bg-white rounded-3xl shadow-xl overflow-hidden transition-transform duration-700 hover:scale-105">
-                <div className="w-full h-[50vh] mx-auto mt-4 rounded-xl overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover object-center"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-6 text-center">
-                  <h3 className="text-2xl font-extrabold text-gray-800">{project.title}</h3>
-                  <p className="text-md text-gray-600 mt-2">{project.category}</p>
-                </div>
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full object-cover"
+              />
+              <div className="p-4">
+                <h3 className="text-lg font-bold text-gray-800">{project.title}</h3>
+                <p className="text-sm text-gray-500">{project.category}</p>
               </div>
             </div>
           ))}
