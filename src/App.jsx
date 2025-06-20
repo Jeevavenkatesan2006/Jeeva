@@ -1,25 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Preloader from "./components/Preloader";
-import About from "./components/About";
-import ServiceSection from "./components/ServiceSection";
-import ServiceDetail from "./components/ServiceDetail";
 import Text from "./components/Text";
-import Portfolio from "./components/Portfolio";
-import PricingTable from "./components/PricingTable";
 
-
+const About = lazy(() => import("./components/About"));
+const ServiceSection = lazy(() => import("./components/ServiceSection"));
+const Portfolio = lazy(() => import("./components/Portfolio"));
+const PricingTable = lazy(() => import("./components/PricingTable"));
+const ServiceDetail = lazy(() => import("./components/ServiceDetail"));
 
 const App = () => {
   const [loading, setLoading] = useState(true);
 
-  // Simulate loading delay
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000); // Preloader stays for 2s
+    const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -27,7 +23,7 @@ const App = () => {
     <Router>
       <div className="bg-black text-white min-h-screen font-sans">
         <Navbar />
-        < Text/>
+        <Text />
         <Routes>
           <Route
             path="/"
@@ -35,16 +31,14 @@ const App = () => {
               loading ? (
                 <Preloader />
               ) : (
-                <>
-                  <About />
-                  <ServiceSection />
-                  <Portfolio/>
-                  <PricingTable/>
-                 
-                  
-                 
-                 
-                </>
+                <Suspense fallback={<Preloader />}>
+                  <>
+                    <About />
+                    <ServiceSection />
+                    <Portfolio />
+                    <PricingTable />
+                  </>
+                </Suspense>
               )
             }
           />
@@ -58,8 +52,6 @@ const App = () => {
         </Routes>
       </div>
     </Router>
-
-    
   );
 };
 

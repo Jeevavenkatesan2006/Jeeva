@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
+import { useInView } from 'react-intersection-observer';
 
 import portfolioImg from "../assets/portfolio.jpg";
 import realestateImg from "../assets/real estate.jpg";
@@ -58,52 +59,60 @@ const FloatingCubes = () => {
 
   return (
     <group ref={groupRef}>
-      {Array.from({ length: 40 }).map((_, i) => (
+      {Array.from({ length: 20 }).map((_, i) => (
         <mesh
           key={i}
-          position={[
-            (Math.random() - 0.5) * 30,
-            (Math.random() - 0.5) * 20,
-            (Math.random() - 0.5) * 30,
-          ]}
+          position={[(Math.random() - 0.5) * 30, (Math.random() - 0.5) * 20, (Math.random() - 0.5) * 30]}
         >
           <boxGeometry args={[0.4, 0.4, 0.4]} />
-          <meshStandardMaterial color="#9333ea" emissive="#a855f7" emissiveIntensity={0.7} />
+          <meshStandardMaterial color="#9333ea" emissive="#a855f7" emissiveIntensity={0.6} />
         </mesh>
       ))}
     </group>
   );
 };
 
-const Background3D = () => (
-  <Canvas camera={{ position: [0, 0, 20], fov: 60 }}>
-    <ambientLight intensity={0.5} />
-    <directionalLight position={[5, 10, 5]} intensity={0.7} />
-    <FloatingCubes />
-    <OrbitControls enableZoom={false} enableRotate={false} enablePan={false} />
-  </Canvas>
-);
+const Background3D = () => {
+  const { ref, inView } = useInView({ threshold: 0.1 });
+
+  return (
+    <div ref={ref} className="absolute inset-0 z-0">
+      {inView && (
+        <Canvas camera={{ position: [0, 0, 20], fov: 60 }} dpr={0.6}>
+          <ambientLight intensity={0.4} />
+          <directionalLight position={[5, 10, 5]} intensity={0.6} />
+          <FloatingCubes />
+          <OrbitControls enableZoom={false} enableRotate={false} enablePan={false} />
+        </Canvas>
+      )}
+    </div>
+  );
+};
 
 const Portfolio = () => {
   const cardRefs = useRef([]);
 
   useEffect(() => {
+    gsap.defaults({ ease: "expo.out", duration: 2 });
     cardRefs.current.forEach((el, i) => {
+      const x = (Math.random() - 0.5) * 800;
+      const y = (Math.random() - 0.5) * 400;
+      const rotation = (Math.random() - 0.5) * 360;
       gsap.fromTo(
         el,
-        { opacity: 0, y: 80, scale: 0.9 },
+        { opacity: 0, x, y, rotationZ: rotation, scale: 0.8 },
         {
           opacity: 1,
+          x: 0,
           y: 0,
+          rotationZ: 0,
           scale: 1,
-          duration: 1,
-          ease: 'power3.out',
           scrollTrigger: {
             trigger: el,
-            start: 'top 85%',
-            end: 'top 30%',
-            scrub: true,
-            toggleActions: 'play reverse play reverse',
+            start: 'top 90%',
+            end: 'top 60%',
+            scrub: 1.5,
+            toggleActions: 'play none none reverse',
           },
         }
       );
@@ -112,30 +121,27 @@ const Portfolio = () => {
 
   return (
     <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
-      {/* 3D Background */}
-      <div className="absolute inset-0 z-0">
-        <Background3D />
-      </div>
+      <Background3D />
 
-      {/* Foreground */}
-      <div className="relative z-10 backdrop-blur-md bg-black/70 pt-28 pb-20 px-4 md:px-10">
+      <div className="relative z-10 backdrop-blur-sm bg-black/70 pt-28 pb-20 px-4 md:px-10">
         <h1 className="text-4xl md:text-5xl font-bold text-center text-fuchsia-400 mb-20">
           My Portfolio – Web Design Creations
         </h1>
 
-        <div className="space-y-36">
+        <div className="space-y-32">
           {projects.map((project, i) => (
             <div
               key={project.id}
               ref={el => (cardRefs.current[i] = el)}
-              className="flex justify-center items-center min-h-[100vh]"
+              className="flex justify-center items-center min-h-[65vh]"
             >
-              <div className="w-11/12 sm:w-4/5 md:w-3/4 bg-white rounded-3xl shadow-2xl overflow-hidden">
-                <div className="w-3/4 h-[65vh] mx-auto mt-4 rounded-2xl overflow-hidden">
+              <div className="w-11/12 sm:w-4/5 md:w-3/4 bg-white rounded-3xl shadow-xl overflow-hidden transition-transform duration-700 hover:scale-105">
+                <div className="w-full h-[50vh] mx-auto mt-4 rounded-xl overflow-hidden">
                   <img
                     src={project.image}
                     alt={project.title}
                     className="w-full h-full object-cover object-center"
+                    loading="lazy"
                   />
                 </div>
                 <div className="p-6 text-center">
