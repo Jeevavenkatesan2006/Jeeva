@@ -98,4 +98,28 @@ img {
     }
   }
 }
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: black;
+  overflow: hidden;
+}
+
+.animate-gradient-x {
+  background-size: 300% 300%;
+  animation: gradient-x 8s ease infinite;
+}
+
+@keyframes gradient-x {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+/* Add to index.css or tailwind globals */
+.perspective {
+  perspective: 1000px;
+}
 
