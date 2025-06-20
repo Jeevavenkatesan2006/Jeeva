@@ -102,7 +102,6 @@ const Portfolio = () => {
       { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
     );
   }, []);
-
   useLayoutEffect(() => {
     const state = Flip.getState('.masonry-item');
     const filtered =
@@ -128,12 +127,12 @@ const Portfolio = () => {
 
       {/* Foreground */}
       <div className="relative z-10 px-6 pt-28 pb-20 backdrop-blur-sm bg-black/60">
-        <h1
-          ref={titleRef}
-          className="text-4xl md:text-5xl font-bold text-center text-fuchsia-400 mb-10"
-        >
-          Discover Our Web Design Creations
-        </h1>
+  <h1
+    ref={titleRef}
+    className="text-4xl md:text-5xl font-bold text-center mb-10 text-fuchsia-400"
+  >
+    Discover Our Web Design Creations
+  </h1>
 
         {/* Filter Buttons */}
         <div className="flex flex-wrap justify-center gap-4 mb-10">
@@ -155,7 +154,7 @@ const Portfolio = () => {
         {/* Masonry Grid */}
         <div
           ref={gridRef}
-          className="columns-1 sm:columns-2 lg:columns-10 gap-5 space-y-5 space-x-5"
+          className="columns-2 sm:columns-3 lg:columns-10 gap-5 space-y-2 space-x-2"
         >
           {displayedProjects.map(project => (
             <div
