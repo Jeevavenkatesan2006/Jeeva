@@ -7,6 +7,8 @@ import About from "./components/About";
 import ServiceSection from "./components/ServiceSection";
 import ServiceDetail from "./components/ServiceDetail";
 import Text from "./components/Text";
+import Portfolio from "./components/Portfolio";
+
 
 
 const App = () => {
@@ -35,6 +37,8 @@ const App = () => {
                 <>
                   <About />
                   <ServiceSection />
+                  <Portfolio/>
+                 
                   
                  
                  
