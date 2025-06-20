@@ -33,19 +33,19 @@ const projects = [
   { id: 2, image:realestateImg , title:'Real Estate website', category: 'Multi Page Websites' },
   { id: 3, image: fooddeliveryImg, title:'Food delivery website', category: 'Single Page Websites' },
   { id: 4, image:hikingImg , title:'Hiking website', category: 'Ecommerce Websites' },
-  { id: 5, image: imageclarifyImg, title:'Imageclarify website',category: 'Ecommerce Websites' },
-  { id: 6, image:landingpageImg, title:'landingpage website', category: 'Ecommerce Websites' },
+  { id: 5, image: imageclarifyImg, title:'Image clarify website',category: 'Ecommerce Websites' },
+  { id: 6, image:landingpageImg, title:'landin gpage website', category: 'Ecommerce Websites' },
   { id: 7, image: saasImg, title:'saas website', category: 'Ecommerce Websites' },
   { id: 8, image:weatherImg , title:'weather website', category: 'Ecommerce Websites'},
-  { id: 9, image:videostreamImg , title:'videostream website', category: 'Single Page Websites' },
-  { id: 10, image:travelenjoyImg , title:'travelenjoy website',category: 'Single Page Websites'  },
-  { id: 11, image:socialmediaImg ,title:'socialmedia website', category: 'Single Page Websites' },
-  { id: 12, image: faceImg,title:'face website',category: 'Single Page Websites'  },
+  { id: 9, image:videostreamImg , title:'video stream website', category: 'Single Page Websites' },
+  { id: 10, image:travelenjoyImg , title:'travel enjoy website',category: 'Single Page Websites'  },
+  { id: 11, image:socialmediaImg ,title:'social media website', category: 'Single Page Websites' },
+  { id: 12, image: faceImg,title:'face recognition website',category: 'Single Page Websites'  },
   { id: 13, image: fasionImg,title:'fasion',category: 'Single Page Websites' },
-  { id: 14, image: creativedesignImg, title:'creativedesign website',category: 'Single Page Websites'  },
+  { id: 14, image: creativedesignImg, title:'creative design website',category: 'Single Page Websites'  },
   { id: 15, image: coronoImg, title:'Health website',category: 'Multi Page Websites' },
   { id: 16, image:  musicImg, title:' music website', category: 'Multi Page Websites' },
-   { id: 17, image: pricepredictionImg,title:'priceprediction website', category: 'Multi Page Websites' },
+   { id: 17, image: pricepredictionImg,title:'price prediction website', category: 'Multi Page Websites' },
     { id: 18, image: electricImg, title:'electric website',category: 'Multi Page Websites'  },
  { id: 19, image: normalImg, title:'web App website', category: 'Multi Page Websites' },
  { id: 20, image:blackmanImg , title:'Land website', category: 'Multi Page Websites' },
@@ -129,9 +129,10 @@ const Portfolio = () => {
       <div className="relative z-10 px-6 pt-28 pb-20 backdrop-blur-sm bg-black/60">
   <h1
     ref={titleRef}
-    className="text-4xl md:text-5xl font-bold text-center mb-10 text-fuchsia-400"
+    className="text-4xl md:text-5xl font-sans text-center mb-10 text-fuchsia-400"
   >
-    Discover Our Web Design Creations
+  <center>My Portfolio</center>
+     Web Design Creations
   </h1>
 
         {/* Filter Buttons */}

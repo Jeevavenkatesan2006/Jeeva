@@ -8,6 +8,7 @@ import ServiceSection from "./components/ServiceSection";
 import ServiceDetail from "./components/ServiceDetail";
 import Text from "./components/Text";
 import Portfolio from "./components/Portfolio";
+import PricingTable from "./components/PricingTable";
 
 
 
@@ -38,6 +39,7 @@ const App = () => {
                   <About />
                   <ServiceSection />
                   <Portfolio/>
+                  <PricingTable/>
                  
                   
                  
