@@ -1,4 +1,7 @@
+
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+
+import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import Flip from 'gsap/Flip';
 import { Canvas, useFrame } from '@react-three/fiber';
@@ -96,11 +99,53 @@ const Portfolio = () => {
   const gridRef = useRef();
 
   useEffect(() => {
+
     gsap.fromTo(
       titleRef.current,
       { opacity: 0, y: 30 },
       { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
     );
+
+    const transitions = [
+      { y: 200, rotateZ: 45, scale: 0.7 },
+      { x: -300, rotateY: 90, opacity: 0 },
+      { y: -200, rotateX: -90, scale: 0.5 },
+      { x: 200, y: 200, rotate: 180 },
+      { scale: 0.3, y: 100, rotateX: 80 },
+      { y: 300, rotateY: -60 },
+      { x: -300, rotateX: 120 },
+      { y: -300, rotateZ: -45 },
+      { y: 300, scale: 0.4, rotateY: 360 },
+      { x: 250, rotateZ: 30 },
+    ];
+
+    cardRefs.current.forEach((el, i) => {
+      const t = transitions[i % transitions.length];
+      gsap.fromTo(
+        el,
+        {
+          opacity: 0,
+          ...t
+        },
+        {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          scale: 1,
+          rotate: 0,
+          rotateX: 0,
+          rotateY: 0,
+          rotateZ: 0,
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 95%',
+            end: 'top 40%',
+            scrub: 1.5,
+          },
+        }
+      );
+    });
+
   }, []);
   useLayoutEffect(() => {
     const state = Flip.getState('.masonry-item');
@@ -117,6 +162,7 @@ const Portfolio = () => {
       stagger: 0.03,
     });
   }, [activeFilter]);
+}
 
   return (
     <div className="relative min-h-screen bg-black text-white">
@@ -149,7 +195,7 @@ const Portfolio = () => {
             >
               {cat}
             </button>
-          ))}
+  ))})
         </div>
 
         {/* Masonry Grid */}
@@ -170,13 +216,53 @@ const Portfolio = () => {
               <div className="p-4">
                 <h3 className="text-lg font-bold text-gray-800">{project.title}</h3>
                 <p className="text-sm text-gray-500">{project.category}</p>
+
+    <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
+      <Background3D />
+      <div className="relative z-10 backdrop-blur-sm bg-black/70 pt-28 pb-20 px-4 md:px-10">
+        <h1 className="text-4xl md:text-5xl font-bold text-center text-fuchsia-400 mb-20">
+          My Portfolio – Web Design Creations
+        </h1>
+        <div className="space-y-32">
+          {projects.map((project, i) => (
+            <div
+              key={project.id}
+              ref={el => (cardRefs.current[i] = el)}
+              className="flex justify-center items-center min-h-[80vh]"
+            >
+              <div className="w-11/12 sm:w-4/5 md:w-3/4 bg-white rounded-3xl shadow-2xl overflow-hidden">
+                <div className="w-full h-[400px] overflow-hidden">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover object-center"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="p-6 text-center">
+                  <h3 className="text-2xl font-extrabold text-gray-800">{project.title}</h3>
+                  <p className="text-md text-gray-600 mt-2">{project.category}</p>
+                </div>
+
+              </div>
+            </div> 
+          ))}
+        </div>
+        <div className="grid-reveal opacity-0 translate-y-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-32">
+          {projects.map((project) => (
+            <div key={project.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
+              <img src={project.image} alt={project.title} className="w-full h-[200px] object-cover" />
+              <div className="p-4 text-center">
+                <h4 className="text-lg font-bold text-gray-800">{project.title}</h4>
               </div>
             </div>
           ))}
         </div>
       </div>
     </div>
+        
   );
 };
+
 
 export default Portfolio;
