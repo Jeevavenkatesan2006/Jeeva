@@ -1,11 +1,11 @@
-
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-
-import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import Flip from 'gsap/Flip';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
+
+// Image imports
 import portfolioImg from "../assets/portfolio.jpg";
 import realestateImg from "../assets/real estate.jpg";
 import fooddeliveryImg from "../assets/food delivery.jpg";
@@ -27,37 +27,35 @@ import electricImg from "../assets/electric .jpg";
 import normalImg from "../assets/normal.jpg";
 import blackmanImg from "../assets/black man.jpg";
 
-gsap.registerPlugin(Flip);
+gsap.registerPlugin(Flip, ScrollTrigger);
 
-// Dummy categories and project data
+// Categories and project data
 const categories = ['All Websites', 'Multi Page Websites', 'Single Page Websites', 'Ecommerce Websites'];
+
 const projects = [
-  { id: 1, image: portfolioImg, title:'Portfolio website',category: 'Single Page Websites' },
-  { id: 2, image:realestateImg , title:'Real Estate website', category: 'Multi Page Websites' },
-  { id: 3, image: fooddeliveryImg, title:'Food delivery website', category: 'Single Page Websites' },
-  { id: 4, image:hikingImg , title:'Hiking website', category: 'Ecommerce Websites' },
-  { id: 5, image: imageclarifyImg, title:'Image clarify website',category: 'Ecommerce Websites' },
-  { id: 6, image:landingpageImg, title:'landin gpage website', category: 'Ecommerce Websites' },
-  { id: 7, image: saasImg, title:'saas website', category: 'Ecommerce Websites' },
-  { id: 8, image:weatherImg , title:'weather website', category: 'Ecommerce Websites'},
-  { id: 9, image:videostreamImg , title:'video stream website', category: 'Single Page Websites' },
-  { id: 10, image:travelenjoyImg , title:'travel enjoy website',category: 'Single Page Websites'  },
-  { id: 11, image:socialmediaImg ,title:'social media website', category: 'Single Page Websites' },
-  { id: 12, image: faceImg,title:'face recognition website',category: 'Single Page Websites'  },
-  { id: 13, image: fasionImg,title:'fasion',category: 'Single Page Websites' },
-  { id: 14, image: creativedesignImg, title:'creative design website',category: 'Single Page Websites'  },
-  { id: 15, image: coronoImg, title:'Health website',category: 'Multi Page Websites' },
-  { id: 16, image:  musicImg, title:' music website', category: 'Multi Page Websites' },
-   { id: 17, image: pricepredictionImg,title:'price prediction website', category: 'Multi Page Websites' },
-    { id: 18, image: electricImg, title:'electric website',category: 'Multi Page Websites'  },
- { id: 19, image: normalImg, title:'web App website', category: 'Multi Page Websites' },
- { id: 20, image:blackmanImg , title:'Land website', category: 'Multi Page Websites' },
-
-
-  
+  { id: 1, image: portfolioImg, title: 'Portfolio website', category: 'Single Page Websites' },
+  { id: 2, image: realestateImg, title: 'Real Estate website', category: 'Multi Page Websites' },
+  { id: 3, image: fooddeliveryImg, title: 'Food delivery website', category: 'Single Page Websites' },
+  { id: 4, image: hikingImg, title: 'Hiking website', category: 'Ecommerce Websites' },
+  { id: 5, image: imageclarifyImg, title: 'Image clarify website', category: 'Ecommerce Websites' },
+  { id: 6, image: landingpageImg, title: 'Landing page website', category: 'Ecommerce Websites' },
+  { id: 7, image: saasImg, title: 'SaaS website', category: 'Ecommerce Websites' },
+  { id: 8, image: weatherImg, title: 'Weather website', category: 'Ecommerce Websites' },
+  { id: 9, image: videostreamImg, title: 'Video stream website', category: 'Single Page Websites' },
+  { id: 10, image: travelenjoyImg, title: 'Travel enjoy website', category: 'Single Page Websites' },
+  { id: 11, image: socialmediaImg, title: 'Social media website', category: 'Single Page Websites' },
+  { id: 12, image: faceImg, title: 'Face recognition website', category: 'Single Page Websites' },
+  { id: 13, image: fasionImg, title: 'Fashion website', category: 'Single Page Websites' },
+  { id: 14, image: creativedesignImg, title: 'Creative design website', category: 'Single Page Websites' },
+  { id: 15, image: coronoImg, title: 'Health website', category: 'Multi Page Websites' },
+  { id: 16, image: musicImg, title: 'Music website', category: 'Multi Page Websites' },
+  { id: 17, image: pricepredictionImg, title: 'Price prediction website', category: 'Multi Page Websites' },
+  { id: 18, image: electricImg, title: 'Electric website', category: 'Multi Page Websites' },
+  { id: 19, image: normalImg, title: 'Web App website', category: 'Multi Page Websites' },
+  { id: 20, image: blackmanImg, title: 'Land website', category: 'Multi Page Websites' },
 ];
 
-// Floating 3D background
+// Floating 3D cubes background
 const FloatingCubes = () => {
   const groupRef = useRef();
   useFrame(({ clock }) => {
@@ -96,10 +94,9 @@ const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState('All Websites');
   const [displayedProjects, setDisplayedProjects] = useState(projects);
   const titleRef = useRef();
-  const gridRef = useRef();
+  const cardRefs = useRef([]);
 
   useEffect(() => {
-
     gsap.fromTo(
       titleRef.current,
       { opacity: 0, y: 30 },
@@ -120,13 +117,11 @@ const Portfolio = () => {
     ];
 
     cardRefs.current.forEach((el, i) => {
+      if (!el) return;
       const t = transitions[i % transitions.length];
       gsap.fromTo(
         el,
-        {
-          opacity: 0,
-          ...t
-        },
+        { opacity: 0, ...t },
         {
           opacity: 1,
           x: 0,
@@ -145,10 +140,10 @@ const Portfolio = () => {
         }
       );
     });
+  }, [displayedProjects]);
 
-  }, []);
   useLayoutEffect(() => {
-    const state = Flip.getState('.masonry-item');
+    const state = Flip.getState('.card');
     const filtered =
       activeFilter === 'All Websites'
         ? projects
@@ -162,27 +157,22 @@ const Portfolio = () => {
       stagger: 0.03,
     });
   }, [activeFilter]);
-}
 
   return (
-    <div className="relative min-h-screen bg-black text-white">
+    <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
       {/* 3D background */}
       <div className="absolute inset-0 z-0">
         <Background3D />
       </div>
 
-      {/* Foreground */}
-      <div className="relative z-10 px-6 pt-28 pb-20 backdrop-blur-sm bg-black/60">
-  <h1
-    ref={titleRef}
-    className="text-4xl md:text-5xl font-sans text-center mb-10 text-fuchsia-400"
-  >
-  <center>My Portfolio</center>
-     Web Design Creations
-  </h1>
+      {/* Foreground content */}
+      <div className="relative z-10 backdrop-blur-sm bg-black/70 pt-28 pb-20 px-4 md:px-10">
+        <h1 ref={titleRef} className="text-4xl md:text-5xl font-bold text-center text-fuchsia-400 mb-12">
+          My Portfolio – Web Design Creations
+        </h1>
 
         {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 mb-10">
+        <div className="flex flex-wrap justify-center gap-4 mb-16">
           {categories.map(cat => (
             <button
               key={cat}
@@ -195,40 +185,16 @@ const Portfolio = () => {
             >
               {cat}
             </button>
-  ))})
+          ))}
         </div>
 
-        {/* Masonry Grid */}
-        <div
-          ref={gridRef}
-          className="columns-2 sm:columns-3 lg:columns-10 gap-5 space-y-2 space-x-2"
-        >
-          {displayedProjects.map(project => (
-            <div
-              key={project.id}
-              className="masonry-item break-inside-avoid bg-white rounded-xl shadow-lg overflow-hidden transform-gpu hover:scale-105 transition-transform duration-300"
-            >
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full object-cover"
-              />
-              <div className="p-4">
-                <h3 className="text-lg font-bold text-gray-800">{project.title}</h3>
-                <p className="text-sm text-gray-500">{project.category}</p>
-
-    <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
-      <Background3D />
-      <div className="relative z-10 backdrop-blur-sm bg-black/70 pt-28 pb-20 px-4 md:px-10">
-        <h1 className="text-4xl md:text-5xl font-bold text-center text-fuchsia-400 mb-20">
-          My Portfolio – Web Design Creations
-        </h1>
+        {/* Project Cards */}
         <div className="space-y-32">
-          {projects.map((project, i) => (
+          {displayedProjects.map((project, i) => (
             <div
               key={project.id}
               ref={el => (cardRefs.current[i] = el)}
-              className="flex justify-center items-center min-h-[80vh]"
+              className="card flex justify-center items-center min-h-[80vh]"
             >
               <div className="w-11/12 sm:w-4/5 md:w-3/4 bg-white rounded-3xl shadow-2xl overflow-hidden">
                 <div className="w-full h-[400px] overflow-hidden">
@@ -243,26 +209,14 @@ const Portfolio = () => {
                   <h3 className="text-2xl font-extrabold text-gray-800">{project.title}</h3>
                   <p className="text-md text-gray-600 mt-2">{project.category}</p>
                 </div>
-
-              </div>
-            </div> 
-          ))}
-        </div>
-        <div className="grid-reveal opacity-0 translate-y-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-32">
-          {projects.map((project) => (
-            <div key={project.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
-              <img src={project.image} alt={project.title} className="w-full h-[200px] object-cover" />
-              <div className="p-4 text-center">
-                <h4 className="text-lg font-bold text-gray-800">{project.title}</h4>
               </div>
             </div>
           ))}
         </div>
+
       </div>
     </div>
-        
   );
 };
-
 
 export default Portfolio;
