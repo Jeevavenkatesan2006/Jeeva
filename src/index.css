@@ -122,4 +122,7 @@ img {
 .perspective {
   perspective: 1000px;
 }
+html {
+  scroll-behavior: smooth;
+}
 

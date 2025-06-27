@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Preloader from "./components/Preloader";
 import Text from "./components/Text";
 
+
 const About = lazy(() => import("./components/About"));
 const ServiceSection = lazy(() => import("./components/ServiceSection"));
 const Portfolio = lazy(() => import("./components/Portfolio"));
@@ -15,14 +16,21 @@ const App = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2000);
+    const timer = setTimeout(() => setLoading(false), 10);
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <Router>
       <div className="bg-black text-white min-h-screen font-sans">
+      
         <Navbar />
+        
+       
+
+        
+        
+
         <Text />
         <Routes>
           <Route
@@ -37,6 +45,8 @@ const App = () => {
                     <ServiceSection />
                     <Portfolio />
                     <PricingTable />
+                  
+                   
                   </>
                 </Suspense>
               )
