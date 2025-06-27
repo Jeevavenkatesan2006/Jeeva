@@ -126,3 +126,10 @@ html {
   scroll-behavior: smooth;
 }
 
+html, body {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  background-color: #000;
+  color: #fff;
+}
+
