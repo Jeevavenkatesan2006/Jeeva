@@ -70,14 +70,14 @@ const HeroSection = () => {
       gsap.fromTo(
         parkerRef.current,
         { x: -100, y: 100, rotation: 45,opacity: 0 },
-        { x: 0, y: -100, rotation: -45,opacity: 1, duration: 2, ease: "power4.out" }
+        { x: 0, y: -100, rotation: -45,opacity: 1, duration: 10, ease: "power3.out" }
       );
     }
   }, []);
   gsap.fromTo(
   parkerRef.current,
   { y: -500, rotation: -720,opacity: 0 },
-  { y: 0, rotation: 0,opacity: 1, duration: 2, ease: "power4.out" }
+  { y: 0, rotation: 0,opacity: 1, duration: 2, ease: "power3.out" }
 );
 
 
@@ -101,7 +101,7 @@ const HeroSection = () => {
   gsap.fromTo(
   markerRef.current,
   { y: -500, rotation: -720,opacity: 0 },
-  { y: 0, rotation: 0,opacity: 1, duration: 2, ease: "power4.out" }
+  { y: 0, rotation: 0,opacity: 1, duration: 2, ease: "power3.out" }
 );
 
   
@@ -118,7 +118,7 @@ const HeroSection = () => {
           opacity: 1,
           rotate: 0,
           duration: 10,
-          ease: "power4.out",
+          ease: "power3.out",
         }
       );
     }
@@ -170,7 +170,7 @@ const HeroSection = () => {
       gsap.fromTo(
         googleRef.current,
         { scale: 0, rotation: -720,opacity: 0, x: -500 },
-        { scale: 1, rotation: 0,opacity: 1, x: 0, duration: 10, ease: "power4.out" }
+        { scale: 1, rotation: 0,opacity: 1, x: 0, duration: 10, ease: "power1.out" }
       );
     }
   }, []);
@@ -181,7 +181,7 @@ const HeroSection = () => {
       gsap.fromTo(
         textRef.current,
         { y: 50, opacity: 0, scale: 0.8 },
-        { y: 0, opacity: 1, scale: 1, duration: 1.5, ease: "power4.out" }
+        { y: 0, opacity: 1, scale: 1, duration: 1.5, ease: "power3.out" }
       );
     }
   }, [textIndex]);
@@ -208,7 +208,7 @@ const HeroSection = () => {
         gsap.fromTo(
   beBraveRef.current,
   { y: -500, rotation: -720,opacity: 0 },
-  { y: 0, rotation: 0,opacity: 1, duration: 10, ease: "power4.out" }
+  { y: 0, rotation: 0,opacity: 1, duration: 10, ease: "power6.out" }
 );
 
 

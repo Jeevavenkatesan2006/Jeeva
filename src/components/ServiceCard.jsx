@@ -7,6 +7,7 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
+import CustomCursor from "../components/CustomCursor";
 
 gsap.registerPlugin(ScrollTrigger);
 

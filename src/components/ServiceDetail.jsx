@@ -4,6 +4,7 @@ import serviceData from "../Data/ServiceData";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
+import CustomCursor from "../components/CustomCursor";
 
 // Floating digital flower-like particles
 const FloatingFlowers = () => {
