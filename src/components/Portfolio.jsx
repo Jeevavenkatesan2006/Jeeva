@@ -1,11 +1,9 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import Flip from "gsap/Flip";
-import ScrollTrigger from "gsap/ScrollTrigger";
+import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 
-gsap.registerPlugin(Flip, ScrollTrigger);
+// Removed GSAP + ScrollTrigger for performance reasons
 
+// Import images
 import portfolioImg from "../assets/portfolio.jpg";
 import realestateImg from "../assets/real estate.jpg";
 import fooddeliveryImg from "../assets/food delivery.jpg";
@@ -52,76 +50,21 @@ const projects = [
   { id: 20, image: blackmanImg, title: "Land website", category: "Multi Page Websites" },
 ];
 
-const FloatingCubes = () => {
-  const groupRef = useRef();
-  useFrame(({ clock }) => {
-    if (groupRef.current) groupRef.current.rotation.y = clock.getElapsedTime() * 0.03;
-  });
-  return (
-    <group ref={groupRef}>
-      {Array.from({ length: 20 }).map((_, i) => (
-        <mesh key={i} position={[(Math.random() - 0.5) * 20, (Math.random() - 0.5) * 15, (Math.random() - 0.5) * 20]}>
-          <boxGeometry args={[0.4, 0.4, 0.4]} />
-          <meshStandardMaterial color="#9333ea" emissive="#a855f7" emissiveIntensity={0.4} />
-        </mesh>
-      ))}
-    </group>
-  );
-};
-
-const Background3D = () => (
-  <Canvas camera={{ position: [0, 0, 20], fov: 60 }}>
-    <ambientLight intensity={0.5} />
-    <directionalLight position={[10, 10, 5]} intensity={0.5} />
-    <FloatingCubes />
-  </Canvas>
-);
-
 const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState("All Websites");
   const [displayedProjects, setDisplayedProjects] = useState(projects);
-  const titleRef = useRef();
-
-  useEffect(() => {
-    gsap.from(titleRef.current, { opacity: 0, y: 40, duration: 1.2, ease: "power4.out" });
-  }, []);
 
   useLayoutEffect(() => {
-    const state = Flip.getState(".card");
     const filtered = activeFilter === "All Websites" ? projects : projects.filter(p => p.category === activeFilter);
     setDisplayedProjects(filtered);
-    Flip.from(state, { duration: 0.7, ease: "power2.inOut", absolute: true, stagger: 0.05 });
   }, [activeFilter]);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      ScrollTrigger.batch(".card", {
-        onEnter: batch => gsap.to(batch, {
-          opacity: 1,
-          y: 0,
-          x: 0,
-          rotate: 0,
-          scale: 1,
-          stagger: 0.15,
-          duration: 0.9,
-          ease: "power3.out"
-        }),
-        start: "top 90%",
-        once: true
-      });
-    });
-    return () => ctx.revert();
-  }, [displayedProjects]);
 
   return (
     <div className="relative min-h-screen bg-black text-white overflow-hidden">
-      <div className="absolute inset-0 z-0"><Background3D /></div>
-
-      <div className="relative z-10 backdrop-blur-md bg-black/80 pt-28 pb-20 px-4 md:px-10">
-        <h1 ref={titleRef} className="text-4xl md:text-5xl font-bold text-center text-fuchsia-400 mb-12">
+      <div className="relative z-10 bg-[#0d0d0d] pt-28 pb-20 px-4 md:px-10">
+        <h1 className="text-4xl md:text-5xl font-bold text-center text-fuchsia-400 mb-12">
           My Portfolio – Web Design Creations
         </h1>
-
         <div className="flex flex-wrap justify-center gap-4 mb-16">
           {categories.map(cat => (
             <button
@@ -137,14 +80,13 @@ const Portfolio = () => {
             </button>
           ))}
         </div>
-
-        <div className="flex flex-col items-center space-y-24">
-          {displayedProjects.map((project, i) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+          {displayedProjects.map(project => (
             <div
               key={project.id}
-              className="card opacity-0 transform scale-90 w-3/4 bg-white rounded-3xl shadow-xl overflow-hidden"
+              className="card opacity-100 transform scale-100 bg-white rounded-3xl shadow-xl overflow-hidden transition duration-500 hover:scale-[1.02]"
             >
-              <div className="w-full h-[400px]">
+              <div className="w-full h-64">
                 <img
                   src={project.image}
                   alt={project.title}
