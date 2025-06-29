@@ -1,9 +1,7 @@
-import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import React, { useEffect, useState, useLayoutEffect } from "react";
+import { motion } from "framer-motion";
 
-// Removed GSAP + ScrollTrigger for performance reasons
-
-// Import images
+// Images
 import portfolioImg from "../assets/portfolio.jpg";
 import realestateImg from "../assets/real estate.jpg";
 import fooddeliveryImg from "../assets/food delivery.jpg";
@@ -80,11 +78,29 @@ const Portfolio = () => {
             </button>
           ))}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+
+        {/* Animated Grid */}
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.1,
+              },
+            },
+          }}
+        >
           {displayedProjects.map(project => (
-            <div
+            <motion.div
               key={project.id}
-              className="card opacity-100 transform scale-100 bg-white rounded-3xl shadow-xl overflow-hidden transition duration-500 hover:scale-[1.02]"
+              className="card bg-white rounded-3xl shadow-xl overflow-hidden transition duration-500 hover:scale-[1.02]"
+              variants={{
+                hidden: { opacity: 0, scale: 0.9, y: 50 },
+                visible: { opacity: 1, scale: 1, y: 0 },
+              }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
             >
               <div className="w-full h-64">
                 <img
@@ -98,9 +114,9 @@ const Portfolio = () => {
                 <h3 className="text-2xl font-bold text-gray-800">{project.title}</h3>
                 <p className="text-sm text-gray-600 mt-2">{project.category}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
