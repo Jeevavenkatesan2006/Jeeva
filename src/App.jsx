@@ -1,9 +1,11 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ScrollTrigger from "gsap/ScrollTrigger";
 
 import Navbar from "./components/Navbar";
 import Preloader from "./components/Preloader";
 import Text from "./components/Text";
+import CustomCursor from "./components/CustomCursor";
 
 
 const About = lazy(() => import("./components/About"));
@@ -21,6 +23,7 @@ const App = () => {
   }, []);
 
   return (
+    
     <Router>
       <div className="bg-black text-white min-h-screen font-sans">
       
@@ -45,6 +48,7 @@ const App = () => {
                     <ServiceSection />
                     <Portfolio />
                     <PricingTable />
+                    <CustomCursor/>
                   
                    
                   </>
@@ -64,5 +68,6 @@ const App = () => {
     </Router>
   );
 };
+
 
 export default App;

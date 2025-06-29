@@ -3,44 +3,48 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import serviceData from "../Data/ServiceData";
 import ServiceCard from "./ServiceCard";
+import CustomCusor from "./CustomCursor";
 
-// Updated Starry Background with Bigger Stars
+// Starry 3D Background
 const StarBackground = () => {
   return (
-    <Canvas camera={{ position: [0, 0, 10], fov: 75 }}>
-      <ambientLight intensity={0.6} />
-      <pointLight position={[5, 5, 5]} />
+    <Canvas
+      className="absolute inset-0 z-0"
+      camera={{ position: [0, 0, 10], fov: 75 }}
+    >
+      <ambientLight intensity={0.5} />
+      <pointLight position={[10, 10, 10]} />
       <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
       <Suspense fallback={null}>
         <Stars
-          radius={200}       // How far the stars spread
-          depth={30}         // Z-space depth
-          count={8000}       // Number of stars
-          factor={70}        // ⭐ BIGGER star size factor
-          saturation={0}     // White stars
-          fade               // Fading edges
-          speed={0.6}        // Subtle motion
+          radius={150}      // Radius of star field
+          depth={50}        // Depth into z-space
+          count={6000}      // Number of stars
+          factor={80}       // Size of stars
+          saturation={0}    // White stars
+          fade              // Smooth fade on edges
+          speed={0.5}       // Slow drift
         />
       </Suspense>
     </Canvas>
   );
 };
 
-// Main Service Section Component
 const ServiceSection = () => {
   return (
-    <section className="relative min-h-screen text-white overflow-hidden">
-      {/* Background: Star Animation */}
-      <div className="absolute inset-0 z-0">
+    <section className="relative w-full min-h-screen overflow-hidden bg-black text-white">
+      {/* Starry Animated Background */}
+      <div className="absolute inset-0 -z-10">
         <StarBackground />
       </div>
 
       {/* Foreground Content */}
-      <div className="relative z-10 py-16 px-8 bg-black/70 backdrop-blur-sm min-h-screen">
-        <h2 className="text-3xl font-bold text-center mb-12 text-cyan-300">
+      <div className="relative z-10 px-6 py-20 bg-black/70 backdrop-blur-sm">
+        <h2 className="text-4xl md:text-5xl font-bold text-center text-cyan-300 mb-12">
           Our Services
         </h2>
-        <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-8">
+
+        <div className="grid gap-10 md:grid-cols-3 sm:grid-cols-2">
           {serviceData.map((service) => (
             <ServiceCard key={service.id} service={service} />
           ))}
