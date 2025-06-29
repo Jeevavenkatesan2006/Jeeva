@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import Preloader from "./components/Preloader";
 import Text from "./components/Text";
 import CustomCursor from "./components/CustomCursor";
+import ShopGrid from "./components/ShopGrid";
 
 
 const About = lazy(() => import("./components/About"));
@@ -49,6 +50,7 @@ const App = () => {
                     <Portfolio />
                     <PricingTable />
                     <CustomCursor/>
+                    <ShopGrid/>
                   
                    
                   </>
