@@ -20,15 +20,15 @@ const transitionVariants = [
 ];
 
 const bgVariants = [
-  "bg-gradient-to-br from-[#fdfbfb] to-[#ebedee]",
-  "bg-gradient-to-br from-[#F1BB0AFF] to-[#060AEAFF]",
-  "bg-gradient-to-br from-[#a1c4fd] to-[#144C66FF]",
+  "bg-gradient-to-br from-[#DD0C0CFF] to-[#1B6CF0FF]",
+  "bg-gradient-to-br from-[#F1BB0AFF] to-[#3E41E6FF]",
+  "bg-gradient-to-br from-[#043584FF] to-[#23F5F5FF]",
   "bg-gradient-to-br from-[#89B81BFF] to-[#0FE52BFF]",
   "bg-gradient-to-br from-[#B41587FF] to-[#1A6EFFFF]",
   "bg-gradient-to-br from-[#84fab0] to-[#0CA5F1FF]",
   "bg-gradient-to-br from-[#E68816FF] to-[#d57eeb]",
   "bg-gradient-to-br from-[#7913D7FF] to-[#8ec5fc]",
-  "bg-gradient-to-br from-[#CC0EE1FF] to-[#f5576c]"
+  "bg-gradient-to-br from-[#DAA1E1FF] to-[#f5576c]"
 ];
 
 const ShopSection = () => {
