@@ -3,12 +3,14 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const Preloader = () => {
   const [isVisible, setIsVisible] = useState(true);
+  
 
   useEffect(() => {
     // Hide preloader after animation
     const timer = setTimeout(() => {
       setIsVisible(false);
     }, 3000); // Total: delay (2s) + duration (1s)
+    
 
     return () => clearTimeout(timer);
   }, []);
