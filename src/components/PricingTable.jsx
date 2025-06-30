@@ -23,7 +23,7 @@ const PricingSection = () => {
         padding: 8rem 1rem 6rem;
         position: relative;
         overflow: hidden;
-        background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+        background: linear-gradient(135deg, #EC0EADFF, #115FE8FF);
         background-size: 400% 400%;
         animation: gradientWave 20s ease infinite;
         color: #333;
