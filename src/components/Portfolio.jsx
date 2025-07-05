@@ -1,7 +1,45 @@
-import React, { useEffect, useState, useLayoutEffect } from "react";
+// Portfolio.jsx
+import React, { useState, useLayoutEffect,useRef } from "react";
 import { motion } from "framer-motion";
+import Tilt from "react-parallax-tilt";
+import * as THREE from "three";
+import { Canvas, useFrame } from "@react-three/fiber";
 
-// Images
+// === Background Flythrough Scene ===
+const FlythroughScene = () => {
+  const cameraRef = useRef();
+  const meshRefs = useRef([]);
+
+  useFrame((state) => {
+    if (cameraRef.current) {
+      cameraRef.current.position.z -= 0.1;
+      if (cameraRef.current.position.z < -100) {
+        cameraRef.current.position.z = 10;
+      }
+    }
+  });
+
+  return (
+    <>
+      <perspectiveCamera ref={cameraRef} position={[0, 0, 10]} fov={75} />
+      <ambientLight intensity={0.5} />
+      <pointLight position={[10, 10, 10]} />
+
+      {[...Array(200)].map((_, i) => (
+        <mesh
+          key={i}
+          ref={(ref) => (meshRefs.current[i] = ref)}
+          position={[Math.random() * 20 - 10, Math.random() * 20 - 10, -Math.random() * 100]}
+        >
+          <sphereGeometry args={[0.2, 16, 16]} />
+          <meshStandardMaterial color={`hsl(${Math.random() * 360}, 100%, 70%)`} />
+        </mesh>
+      ))}
+    </>
+  );
+};
+
+// === Images ===
 import portfolioImg from "../assets/portfolio.jpg";
 import realestateImg from "../assets/real estate.jpg";
 import fooddeliveryImg from "../assets/food delivery.jpg";
@@ -23,7 +61,12 @@ import electricImg from "../assets/electric .jpg";
 import normalImg from "../assets/normal.jpg";
 import blackmanImg from "../assets/black man.jpg";
 
-const categories = ["All Websites", "Multi Page Websites", "Single Page Websites", "Ecommerce Websites"];
+const categories = [
+  "All Websites",
+  "Multi Page Websites",
+  "Single Page Websites",
+  "Ecommerce Websites",
+];
 
 const projects = [
   { id: 1, image: portfolioImg, title: "Portfolio website", category: "Single Page Websites" },
@@ -53,18 +96,45 @@ const Portfolio = () => {
   const [displayedProjects, setDisplayedProjects] = useState(projects);
 
   useLayoutEffect(() => {
-    const filtered = activeFilter === "All Websites" ? projects : projects.filter(p => p.category === activeFilter);
+    const filtered =
+      activeFilter === "All Websites"
+        ? projects
+        : projects.filter((p) => p.category === activeFilter);
     setDisplayedProjects(filtered);
   }, [activeFilter]);
 
+  const getAnimationProps = (index) => {
+    const directions = [
+      { x: -80, y: 0 },
+      { x: 80, y: 0 },
+      { x: 0, y: -80 },
+      { x: 0, y: 80 },
+      { x: -60, y: -60 },
+      { x: 60, y: 60 },
+    ];
+    const dir = directions[index % directions.length];
+    return {
+      initial: { opacity: 0, x: dir.x, y: dir.y },
+      whileInView: { opacity: 1, x: 0, y: 0 },
+      transition: { duration: 0.6, ease: "easeOut" },
+      viewport: { once: true },
+    };
+  };
+
   return (
-    <div className="relative min-h-screen bg-black text-white overflow-hidden">
-      <div className="relative z-10 bg-[#0d0d0d] pt-28 pb-20 px-4 md:px-10">
+    <div className="relative min-h-screen text-white overflow-hidden">
+      <Canvas className="absolute top-0 left-0 w-full h-full z-0">
+        <FlythroughScene />
+      </Canvas>
+
+      <div className="relative z-10 pt-28 pb-20 px-4 md:px-10 bg-[#0d0d0d]/90">
         <h1 className="text-4xl md:text-5xl font-bold text-center text-fuchsia-400 mb-12">
           My Portfolio – Web Design Creations
         </h1>
-        <div className="flex flex-wrap justify-center gap-4 mb-16">
-          {categories.map(cat => (
+
+        {/* Filter Buttons */}
+        <div className="flex flex-wrap justify-center gap-4 mb-12">
+          {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveFilter(cat)}
@@ -79,41 +149,49 @@ const Portfolio = () => {
           ))}
         </div>
 
-        {/* Animated Grid */}
+        {/* Grid Section */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
           initial="hidden"
           animate="visible"
           variants={{
             visible: {
               transition: {
-                staggerChildren: 0.1,
+                staggerChildren: 0.08,
               },
             },
           }}
         >
-          {displayedProjects.map(project => (
-            <motion.div
-              key={project.id}
-              className="card bg-white rounded-3xl shadow-xl overflow-hidden transition duration-500 hover:scale-[1.02]"
-              variants={{
-                hidden: { opacity: 0, scale: 0.9, y: 50 },
-                visible: { opacity: 1, scale: 1, y: 0 },
-              }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-            >
-              <div className="w-full h-64">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover object-center"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-6 text-center">
-                <h3 className="text-2xl font-bold text-gray-800">{project.title}</h3>
-                <p className="text-sm text-gray-600 mt-2">{project.category}</p>
-              </div>
+          {displayedProjects.map((project, i) => (
+            <motion.div key={project.id} {...getAnimationProps(i)}>
+              <Tilt
+                glareEnable={true}
+                glareMaxOpacity={0.2}
+                glareColor="#ffffff"
+                glarePosition="all"
+                tiltMaxAngleX={10}
+                tiltMaxAngleY={10}
+                className="rounded-3xl"
+              >
+                <div className="bg-white rounded-3xl shadow-xl overflow-hidden transition duration-500 hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                  <div className="w-full h-48">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover object-center"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="p-4 text-center">
+                    <h3 className="text-lg font-bold text-gray-800">
+                      {project.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {project.category}
+                    </p>
+                  </div>
+                </div>
+              </Tilt>
             </motion.div>
           ))}
         </motion.div>

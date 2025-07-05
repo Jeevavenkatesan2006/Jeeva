@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
@@ -17,6 +17,14 @@ const ContactUs = () => {
   const messageRef = useRef();
   const buttonRef = useRef();
 
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
@@ -28,7 +36,6 @@ const ContactUs = () => {
         defaults: { ease: "power3.out", duration: 1 },
       });
 
-      // 👇 Your original transitions
       tl.from(titleRef.current, { x: -300, y: -150, opacity: 0 })
         .from(descRef.current, { x: -150, y: 80, opacity: 0 }, "-=0.6")
         .from(emailInfoRef.current, { x: -200, opacity: 0 }, "-=0.5")
@@ -40,21 +47,37 @@ const ContactUs = () => {
         .from(buttonRef.current, { y: -200, scale: 0.5, rotate: -15, opacity: 0 }, "-=0.6");
     }, sectionRef);
 
-    return () => ctx.revert(); // cleanup on unmount
+    return () => ctx.revert();
   }, []);
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+
+    // Optional: reset form
+    setFormData({ name: "", email: "", message: "" });
+
+    // Optional: hide success after 3s
+    setTimeout(() => setIsSubmitted(false), 3000);
+  };
 
   return (
     <section
       ref={sectionRef}
       className="relative min-h-screen w-full overflow-hidden flex items-center justify-center px-4 py-20 bg-gradient-to-r from-current-500 via-current-500 to-blue-500 bg-[length:200%_200%] animate-[gradientMove_12s_ease_infinite]"
     >
-      {/* Background Blobs */}
       <div className="absolute top-16 left-12 w-40 h-40 bg-white/20 rounded-full blur-3xl opacity-20 z-0" />
       <div className="absolute bottom-10 right-10 w-72 h-72 bg-white/10 rounded-full blur-2xl opacity-30 z-0" />
 
-      {/* Main Content */}
       <div className="relative z-10 w-full max-w-6xl bg-black/30 backdrop-blur-2xl border border-white/20 shadow-xl rounded-2xl p-10 grid grid-cols-1 md:grid-cols-2 gap-10 text-white">
-        {/* LEFT */}
+        {/* LEFT SIDE */}
         <div className="flex flex-col justify-between">
           <div>
             <h2 ref={titleRef} className="text-4xl font-bold mb-4">Contact Us</h2>
@@ -78,41 +101,63 @@ const ContactUs = () => {
           </div>
         </div>
 
-        {/* RIGHT */}
-        <form className="space-y-6">
+        {/* RIGHT SIDE */}
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div ref={nameRef}>
             <label className="block mb-1 font-medium">Name</label>
             <input
+              name="name"
               type="text"
+              value={formData.name}
+              onChange={handleChange}
               placeholder="Your Name"
+              required
               className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 placeholder-white/60 text-white focus:outline-none focus:ring-2 focus:ring-pink-400"
             />
           </div>
           <div ref={emailRef}>
             <label className="block mb-1 font-medium">Email</label>
             <input
+              name="email"
               type="email"
+              value={formData.email}
+              onChange={handleChange}
               placeholder="Your Email"
+              required
               className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 placeholder-white/60 text-white focus:outline-none focus:ring-2 focus:ring-purple-400"
             />
           </div>
           <div ref={messageRef}>
             <label className="block mb-1 font-medium">Message</label>
             <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
               rows="5"
               placeholder="Your Message"
+              required
               className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 placeholder-white/60 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
           </div>
           <div ref={buttonRef}>
-            <button className="w-full py-3 bg-gradient-to-r from-pink-500 to-indigo-500 text-white font-bold rounded-xl shadow-md transition duration-300 hover:scale-105">
+            <button
+              type="submit"
+              className="w-full py-3 bg-gradient-to-r from-pink-500 to-indigo-500 text-white font-bold rounded-xl shadow-md transition duration-300 hover:scale-105"
+            >
               Send Message
             </button>
           </div>
+
+          {/* ✅ Success message */}
+          {isSubmitted && (
+            <p className="text-center text-green-400 font-semibold">
+              Submitted successfully!
+            </p>
+          )}
         </form>
       </div>
 
-      {/* Gradient animation */}
+      {/* Gradient animation keyframe */}
       <style>{`
         @keyframes gradientMove {
           0%, 100% { background-position: 0% 50%; }
