@@ -19,6 +19,7 @@ import AboutSection from "./components/About";
 import ServiceSection from "./components/ServiceSection";
 import Portfolio from "./components/Portfolio";
 import PricingSection from "./components/PricingTable";
+import Loading from "./components/Loading";
 
 // Lazy Loaded Components
 const ServiceDetail = lazy(() => import("./components/ServiceDetail"));
