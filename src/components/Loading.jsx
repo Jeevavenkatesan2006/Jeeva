@@ -1,7 +1,8 @@
+// src/components/Loading.jsx
+
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-// Make sure logo path is correct and exists
-import logo from "../assets/logo 2.gif";
+import logo from "./assets/logo2.gif"; // ✅ Make sure no spaces in filename
 
 function Loading() {
   const loaderRef = useRef(null);
@@ -44,13 +45,15 @@ function Loading() {
   return (
     <div
       ref={loaderRef}
-      className="fixed inset-0 z-50 bg-black text-gray-50 flex flex-col items-center justify-center space-y-4 text-center">
+      className="fixed inset-0 z-50 bg-black text-gray-50 flex flex-col items-center justify-center space-y-4 text-center"
+    >
       {/* Logo first */}
       <img
         ref={logoRef}
         src={logo}
         alt="Logo"
-        className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover" />
+        className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover"
+      />
 
       {/* Title */}
       <h1 ref={titleRef} className="text-3xl sm:text-5xl font-semibold">
