@@ -5,7 +5,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import CustomCursor from "../components/CustomCursor";
-import logo from "../assets/logo 2.gif";
+
 
 // Floating digital flower-like particles
 const FloatingFlowers = () => {

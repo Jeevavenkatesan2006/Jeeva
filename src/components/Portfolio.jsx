@@ -4,7 +4,7 @@ import gsap from "gsap";
 import Tilt from "react-parallax-tilt";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
-import logo from "../assets/logo 2.gif";
+
 
 // === Flythrough 3D Background ===
 const FlythroughScene = () => {

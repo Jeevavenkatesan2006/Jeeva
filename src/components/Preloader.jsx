@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "../assets/logo 2.gif";
+
 
 const Preloader = () => {
   const [isVisible, setIsVisible] = useState(true);

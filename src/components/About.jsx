@@ -6,7 +6,7 @@ import aboutImage from "../assets/mans.png";
 import VanillaTilt from "vanilla-tilt";
 // Three.js
 import * as THREE from "three";
-import logo from "../assets/logo 2.gif";
+import Loading from "../components/Loading";
 
 gsap.registerPlugin(ScrollTrigger);
 
