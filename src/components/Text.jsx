@@ -12,7 +12,7 @@ const texts = [
 ];
 
 // Change these to your picture paths
-const bottomLeftPicture = "src/assets/note image.png";
+const bottomLeftPicture = "src/assets/noteimage.png";
 const markerPicture = "src/assets/marker.png";
 // NEW tab1 picture (right bottom corner)
 const tab1Picture = "src/assets/tabpen.png";
