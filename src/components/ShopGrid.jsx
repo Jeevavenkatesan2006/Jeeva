@@ -4,6 +4,7 @@ import shopItems from "../Data/ShopData";
 import { FaLock, FaTimes } from "react-icons/fa";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import logo from "../assets/logo 2.gif";
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 // Make sure logo path is correct and exists
 import logo from "../assets/logo 2.gif";
 
-const Loading = () => {
+function Loading() {
   const loaderRef = useRef(null);
   const logoRef = useRef(null);
   const titleRef = useRef(null);
@@ -15,27 +15,27 @@ const Loading = () => {
 
     tl.fromTo(
       logoRef.current,
-      {opacity: 0, scale: 0.8},
-      {opacity: 1, scale: 1, duration: 0.8}
+      { opacity: 0, scale: 0.8 },
+      { opacity: 1, scale: 1, duration: 0.8 }
     )
       .fromTo(
         titleRef.current,
-        {opacity: 0, y: 40},
-        {opacity: 1, y: 0, duration: 1},
-       "-=0.4"
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 1 },
+        "-=0.4"
       )
       .fromTo(
         textRef.current,
-        {opacity: 0, y: 40},
-        {opacity: 1, y: 0, duration: 1},
-       "-=0.4"
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 1 },
+        "-=0.4"
       )
       .to(loaderRef.current, {
-       opacity: 0,
-       y:"-100%", 
-       duration: 1,
-       delay: 0.5,
-       onComplete: () => setIsVisible(false),
+        opacity: 0,
+        y: "-100%",
+        duration: 1,
+        delay: 0.5,
+        onComplete: () => setIsVisible(false),
       });
   }, []);
 
@@ -50,8 +50,7 @@ const Loading = () => {
         ref={logoRef}
         src={logo}
         alt="Logo"
-        className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover"
-      />
+        className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover" />
 
       {/* Title */}
       <h1 ref={titleRef} className="text-3xl sm:text-5xl font-semibold">
@@ -64,6 +63,6 @@ const Loading = () => {
       </p>
     </div>
   );
-};
+}
 
 export default Loading;

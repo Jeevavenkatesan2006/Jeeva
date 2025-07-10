@@ -4,6 +4,7 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import plans from "../Data/Plans";
+import logo from "../assets/logo 2.gif";
 
 gsap.registerPlugin(ScrollTrigger);
 

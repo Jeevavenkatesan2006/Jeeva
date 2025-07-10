@@ -4,6 +4,7 @@ import { OrbitControls, Stars } from "@react-three/drei";
 import serviceData from "../Data/ServiceData";
 import ServiceCard from "./ServiceCard";
 import CustomCusor from "./CustomCursor";
+import logo from "../assets/logo 2.gif";
 
 // Starry 3D Background
 const StarBackground = () => {

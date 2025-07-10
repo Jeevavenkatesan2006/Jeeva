@@ -2,6 +2,7 @@ import React from "react";
 import ServiceCard from "../components/ServiceCard";
 import serviceData from "../Data/ServiceData";
 import CustomCusor from "../components/CustomCursor";
+import logo from "../assets/logo 2.gif";
 
 
 const Services = () => {
