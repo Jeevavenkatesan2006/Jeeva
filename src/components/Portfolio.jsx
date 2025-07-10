@@ -1,16 +1,16 @@
-// Portfolio.jsx
-import React, { useState, useLayoutEffect,useRef } from "react";
+import React, { useState, useLayoutEffect, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
+import gsap from "gsap";
 import Tilt from "react-parallax-tilt";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 
-// === Background Flythrough Scene ===
+// === Flythrough 3D Background ===
 const FlythroughScene = () => {
   const cameraRef = useRef();
   const meshRefs = useRef([]);
 
-  useFrame((state) => {
+  useFrame(() => {
     if (cameraRef.current) {
       cameraRef.current.position.z -= 0.1;
       if (cameraRef.current.position.z < -100) {
@@ -24,22 +24,27 @@ const FlythroughScene = () => {
       <perspectiveCamera ref={cameraRef} position={[0, 0, 10]} fov={75} />
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} />
-
-      {[...Array(200)].map((_, i) => (
+      {[...Array(150)].map((_, i) => (
         <mesh
           key={i}
           ref={(ref) => (meshRefs.current[i] = ref)}
-          position={[Math.random() * 20 - 10, Math.random() * 20 - 10, -Math.random() * 100]}
+          position={[
+            Math.random() * 20 - 10,
+            Math.random() * 20 - 10,
+            -Math.random() * 100,
+          ]}
         >
           <sphereGeometry args={[0.2, 16, 16]} />
-          <meshStandardMaterial color={`hsl(${Math.random() * 360}, 100%, 70%)`} />
+          <meshStandardMaterial
+            color={`hsl(${Math.random() * 360}, 100%, 70%)`}
+          />
         </mesh>
       ))}
     </>
   );
 };
 
-// === Images ===
+// === Image Assets ===
 import portfolioImg from "../assets/portfolio.jpg";
 import realestateImg from "../assets/real estate.jpg";
 import fooddeliveryImg from "../assets/food delivery.jpg";
@@ -91,9 +96,28 @@ const projects = [
   { id: 20, image: blackmanImg, title: "Land website", category: "Multi Page Websites" },
 ];
 
+const scatteredVariants = {
+  hidden: (i) => ({
+    opacity: 0,
+    x: [-80, 80, -40, 40, 0][i % 5],
+    y: [-60, -60, 60, 60, 100][i % 5],
+    rotate: [-15, 15, -10, 10, 0][i % 5],
+    scale: 0.9,
+  }),
+  visible: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    rotate: 0,
+    scale: 1,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
+
 const Portfolio = () => {
   const [activeFilter, setActiveFilter] = useState("All Websites");
   const [displayedProjects, setDisplayedProjects] = useState(projects);
+  const containerRef = useRef();
 
   useLayoutEffect(() => {
     const filtered =
@@ -103,23 +127,13 @@ const Portfolio = () => {
     setDisplayedProjects(filtered);
   }, [activeFilter]);
 
-  const getAnimationProps = (index) => {
-    const directions = [
-      { x: -80, y: 0 },
-      { x: 80, y: 0 },
-      { x: 0, y: -80 },
-      { x: 0, y: 80 },
-      { x: -60, y: -60 },
-      { x: 60, y: 60 },
-    ];
-    const dir = directions[index % directions.length];
-    return {
-      initial: { opacity: 0, x: dir.x, y: dir.y },
-      whileInView: { opacity: 1, x: 0, y: 0 },
-      transition: { duration: 0.6, ease: "easeOut" },
-      viewport: { once: true },
-    };
-  };
+  useEffect(() => {
+    gsap.fromTo(
+      containerRef.current,
+      { y: 100, opacity: 0, filter: "blur(10px)" },
+      { y: 0, opacity: 1, filter: "blur(0px)", duration: 1.5, ease: "power3.out" }
+    );
+  }, []);
 
   return (
     <div className="relative min-h-screen text-white overflow-hidden">
@@ -127,7 +141,10 @@ const Portfolio = () => {
         <FlythroughScene />
       </Canvas>
 
-      <div className="relative z-10 pt-28 pb-20 px-4 md:px-10 bg-[#0d0d0d]/90">
+      <div
+        ref={containerRef}
+        className="relative z-10 pt-28 pb-20 px-4 md:px-10 bg-[#0d0d0d]/90"
+      >
         <h1 className="text-4xl md:text-5xl font-bold text-center text-fuchsia-400 mb-12">
           My Portfolio – Web Design Creations
         </h1>
@@ -135,7 +152,9 @@ const Portfolio = () => {
         {/* Filter Buttons */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
           {categories.map((cat) => (
-            <button
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.05 }}
               key={cat}
               onClick={() => setActiveFilter(cat)}
               className={`px-4 py-2 font-semibold rounded-full transition duration-300 ${
@@ -145,25 +164,25 @@ const Portfolio = () => {
               }`}
             >
               {cat}
-            </button>
+            </motion.button>
           ))}
         </div>
 
-        {/* Grid Section */}
+        {/* Scattered Grid */}
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
           initial="hidden"
           animate="visible"
-          variants={{
-            visible: {
-              transition: {
-                staggerChildren: 0.08,
-              },
-            },
-          }}
         >
           {displayedProjects.map((project, i) => (
-            <motion.div key={project.id} {...getAnimationProps(i)}>
+            <motion.div
+              key={project.id}
+              custom={i}
+              variants={scatteredVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
               <Tilt
                 glareEnable={true}
                 glareMaxOpacity={0.2}

@@ -102,11 +102,7 @@ const Navbar = () => {
               mobileMenuOpen ? "translate-x-0" : "translate-x-full"
             } transition-transform duration-500 z-40 h-screen overflow-y-auto`}
           >
-            <div className="flex justify-end">
-              <button onClick={closeMenu} className="text-2xl">
-                <FaTimes />
-              </button>
-            </div>
+            
             <ul className="flex flex-col space-y-6 mt-10">
               {menuItems.map((item) => (
                 <li key={item.name} onClick={closeMenu}>
